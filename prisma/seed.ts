@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 
 async function main() {
   for (const category of dataCategories) {
-    // await prisma.category.create({
-    //   data: category,
-    // });
+    await prisma.category.create({
+      data: category,
+    });
   }
 
   console.log('Database has been seeded. 🌱');
