@@ -4,8 +4,8 @@ import { LogOut, Newspaper, NotebookPen, PencilLineIcon, Settings, User, UserCog
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
-import DarkModeToggle from '../darkMode';
 import { useTheme } from 'next-themes';
+import DarkModeToggle from '../darkMode';
 
 const NavClient = ({ user }: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

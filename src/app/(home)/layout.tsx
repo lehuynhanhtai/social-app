@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import '../globals.css';
 import Nav from '@/components/home/navbar/nav';
 import { DarkModeProvider } from '@/providers/darkModeProvider';
+import Footer from '@/components/home/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <DarkModeProvider>
           <Nav />
           <div className="dark:bg-gray-800 flex-1">{children}</div>
+          <Footer />
         </DarkModeProvider>
       </body>
     </html>

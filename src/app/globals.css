@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  @apply duration-100 ease-out;
-}
-
 html {
   scroll-behavior: smooth;
   height: 100%;
