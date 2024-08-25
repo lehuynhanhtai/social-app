@@ -1,6 +1,6 @@
 'use client';
 import React, { use, useEffect, useRef, useState } from 'react';
-import { LogOut, Newspaper, NotebookPen, Settings, User, UserCog } from 'lucide-react';
+import { LogOut, Newspaper, NotebookPen, PencilLineIcon, Settings, User, UserCog } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
@@ -53,65 +53,71 @@ const NavClient = ({ user }: any) => {
               Đăng nhập
             </Link>
           ) : (
-            <div className="relative" ref={menuRef}>
-              {/* AVATAR */}
-              <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" onClick={() => setDropdownAvatar(!dropdownAvatar)}>
-                <Image className="rounded-full" src={user?.image!} alt="user photo" width={40} height={40} />
-              </button>
-              {/* <!--MENU USER--> */}
-              {dropdownAvatar && (
-                <div
-                  className={`absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 
+            <>
+              <Link href="/write" className="font-medium md:mr-4 flex items-center justify-center gap-1">
+                <PencilLineIcon className="mr-2 h-5 w-5" />
+                Viết bài
+              </Link>
+              <div className="relative" ref={menuRef}>
+                {/* AVATAR */}
+                <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" onClick={() => setDropdownAvatar(!dropdownAvatar)}>
+                  <Image className="rounded-full" src={user?.image!} alt="user photo" width={40} height={40} />
+                </button>
+                {/* <!--MENU USER--> */}
+                {dropdownAvatar && (
+                  <div
+                    className={`absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 
             transition-transform duration-1000 ease-in-out transform origin-top-right ${dropdownAvatar ? 'scale-900 opacity-500' : 'scale-700 opacity-0'}`}
-                  id="user-dropdown"
-                >
-                  <div className="px-4 py-3">
-                    <span className="block text-sm text-gray-900 dark:text-white">{user?.name}</span>
-                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{user?.email}</span>
-                  </div>
-                  <ul className="py-2" aria-labelledby="user-menu-button">
-                    {user?.role === 'admin' && (
+                    id="user-dropdown"
+                  >
+                    <div className="px-4 py-3">
+                      <span className="block text-sm text-gray-900 dark:text-white">{user?.name}</span>
+                      <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{user?.email}</span>
+                    </div>
+                    <ul className="py-2" aria-labelledby="user-menu-button">
+                      {user?.role === 'admin' && (
+                        <li>
+                          <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            <UserCog size={16} />
+                            Dashboard
+                          </Link>
+                        </li>
+                      )}
                       <li>
                         <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                          <UserCog size={16} />
-                          Dashboard
+                          <User size={16} />
+                          Trang cá nhân
                         </Link>
                       </li>
-                    )}
-                    <li>
-                      <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                        <User size={16} />
-                        Trang cá nhân
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                        <Newspaper size={16} />
-                        Bài viết của tôi
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                        <NotebookPen size={16} />
-                        Nháp của tôi
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                        <Settings size={16} />
-                        Tùy chỉnh tài khoản
-                      </Link>
-                    </li>
-                    <li>
-                      <span onClick={() => signOut()} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                        <LogOut size={16} />
-                        Đăng xuất
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+                      <li>
+                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                          <Newspaper size={16} />
+                          Bài viết của tôi
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                          <NotebookPen size={16} />
+                          Nháp của tôi
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                          <Settings size={16} />
+                          Tùy chỉnh tài khoản
+                        </Link>
+                      </li>
+                      <li>
+                        <span onClick={() => signOut()} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                          <LogOut size={16} />
+                          Đăng xuất
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </>
           )}
           {/* BURGER */}
           <button

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  @apply duration-200 ease-out;
+  @apply duration-100 ease-out;
 }
 
 html {
