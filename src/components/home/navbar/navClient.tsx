@@ -1,11 +1,42 @@
 'use client';
-import React, { use, useEffect, useRef, useState } from 'react';
+import React, { use, useCallback, useEffect, useRef, useState } from 'react';
 import { LogOut, Newspaper, NotebookPen, PencilLineIcon, Settings, User, UserCog } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
-import DarkModeToggle from '../darkMode';
+import DarkModeToggle from '../DarkMode';
+import { usePathname } from 'next/navigation';
+
+const menuLink = [
+  {
+    id: 1,
+    name: 'Trang chủ',
+    href: '/',
+  },
+  {
+    id: 2,
+    name: 'Liên hệ',
+    href: '/contact',
+  },
+  {
+    id: 3,
+    name: 'Về S-BLOG',
+    href: '/about',
+  },
+  {
+    id: 4,
+    name: 'Tìm kiếm',
+    href: '/search',
+  },
+];
+
+const userMenuItems = [
+  { id: 1, icon: User, label: 'Trang cá nhân', href: '#' },
+  { id: 2, icon: Newspaper, label: 'Bài viết của tôi', href: '#' },
+  { id: 3, icon: NotebookPen, label: 'Nháp của tôi', href: '#' },
+  { id: 4, icon: Settings, label: 'Tùy chỉnh tài khoản', href: '#' },
+];
 
 const NavClient = ({ user }: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +44,7 @@ const NavClient = ({ user }: any) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const pathName = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -30,9 +62,13 @@ const NavClient = ({ user }: any) => {
     };
   }, [menuRef, dropdownAvatar]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
+
+  const toggleDropdownAvatar = useCallback(() => {
+    setDropdownAvatar(prev => !prev);
+  }, []);
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -49,7 +85,7 @@ const NavClient = ({ user }: any) => {
         </Link>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           {!user ? (
-            <Link href="/api/auth/signin" className={`font-medium hover:text-blue-500 px-4 py-2 border rounded-full`}>
+            <Link href="/auth/login" className={`font-medium ${pathName === '/auth/login' ? 'text-blue-500' : ''} hover:text-blue-500 px-4 py-2 border rounded-full`}>
               Đăng nhập
             </Link>
           ) : (
@@ -60,7 +96,7 @@ const NavClient = ({ user }: any) => {
               </Link>
               <div className="relative" ref={menuRef}>
                 {/* AVATAR */}
-                <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" onClick={() => setDropdownAvatar(!dropdownAvatar)}>
+                <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" onClick={toggleDropdownAvatar}>
                   <Image className="rounded-full" src={user?.image!} alt="user photo" width={40} height={40} />
                 </button>
                 {/* <!--MENU USER--> */}
@@ -77,36 +113,20 @@ const NavClient = ({ user }: any) => {
                     <ul className="py-2" aria-labelledby="user-menu-button">
                       {user?.role === 'admin' && (
                         <li>
-                          <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                             <UserCog size={16} />
                             Dashboard
                           </Link>
                         </li>
                       )}
-                      <li>
-                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                          <User size={16} />
-                          Trang cá nhân
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                          <Newspaper size={16} />
-                          Bài viết của tôi
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                          <NotebookPen size={16} />
-                          Nháp của tôi
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                          <Settings size={16} />
-                          Tùy chỉnh tài khoản
-                        </Link>
-                      </li>
+                      {userMenuItems.map(item => (
+                        <li key={item.id}>
+                          <Link href={item.href} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            <item.icon size={16} />
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
                       <li>
                         <span onClick={() => signOut()} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                           <LogOut size={16} />
@@ -134,35 +154,18 @@ const NavClient = ({ user }: any) => {
         {/* Link Menu */}
         <div className={`${isMenuOpen ? 'block' : 'hidden'} items-center justify-between w-full md:flex md:w-auto md:order-1`} id="navbar-user">
           <ul className="flex flex-col items-center font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
-              <a href="#" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">
-                Trang chủ
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Liên hệ
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Về S-BLOG
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Tìm kiếm
-              </a>
-            </li>
+            {menuLink.map(item => (
+              <li key={item.id}>
+                <Link
+                  href={item.href}
+                  className={`${
+                    pathName === item.href ? 'text-blue-700 dark:text-blue-700' : 'text-gray-900 dark:text-white'
+                  } block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent`}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
             <DarkModeToggle />
           </ul>
         </div>
@@ -171,4 +174,4 @@ const NavClient = ({ user }: any) => {
   );
 };
 
-export default NavClient;
+export default React.memo(NavClient);
