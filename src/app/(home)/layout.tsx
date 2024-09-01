@@ -4,6 +4,7 @@ import '../globals.css';
 import Nav from '@/components/home/navbar/nav';
 import { DarkModeProvider } from '@/providers/darkModeProvider';
 import Footer from '@/components/home/Footer';
+import BackToTop from '@/components/home/BackToTop';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <DarkModeProvider>
           <Nav />
           <div className="dark:bg-gray-800 flex-1">{children}</div>
+          <BackToTop />
           <Footer />
         </DarkModeProvider>
       </body>

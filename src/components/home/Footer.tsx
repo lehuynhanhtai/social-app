@@ -40,21 +40,6 @@ const Footer = () => {
                     Tailwind CSS
                   </a>
                 </li>
-                <li className="mb-4">
-                  <a href="https://tailwindcss.com/" className="hover:underline">
-                    UploadThing
-                  </a>
-                </li>
-                <li className="mb-4">
-                  <a href="https://tailwindcss.com/" className="hover:underline">
-                    NextJS
-                  </a>
-                </li>
-                <li>
-                  <a href="https://tailwindcss.com/" className="hover:underline">
-                    Lucide
-                  </a>
-                </li>
               </ul>
             </div>
             <div>
@@ -68,21 +53,6 @@ const Footer = () => {
                 <li className="mb-4">
                   <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">
                     Discord
-                  </a>
-                </li>
-                <li className="mb-4">
-                  <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">
-                    FaceBook
-                  </a>
-                </li>
-                <li className="mb-4">
-                  <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">
-                    TikTock
                   </a>
                 </li>
               </ul>
